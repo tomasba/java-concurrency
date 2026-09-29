@@ -1,6 +1,9 @@
-package com.jep.concurrency;
+package com.jep.concurrency.shopping;
 
-public record UserOrderResult(User user, Order order) {
+import com.jep.concurrency.order.Order;
+import com.jep.concurrency.user.User;
+
+public record ShoppingCart(User user, Order order) {
     @Override
     public String toString() {
         return "UserOrderResult{" +

@@ -1,8 +1,8 @@
 package com.jep.concurrency;
 
+import com.jep.concurrency.order.MockOrders;
+import com.jep.concurrency.user.MockUsers;
 import org.junit.jupiter.api.Test;
-
-import java.util.Timer;
 
 public class SequentialExecTest {
 

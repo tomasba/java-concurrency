@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.concurrent.StructuredTaskScope;
 
-public class StructuredVirtualThreadsTest {
+public class StructuredVirtualThreadsExceptionHandlingTest {
 
     @Test
     void shouldExecuteStructuredVirtualThreads() throws InterruptedException {

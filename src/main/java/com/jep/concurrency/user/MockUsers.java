@@ -1,4 +1,4 @@
-package com.jep.concurrency;
+package com.jep.concurrency.user;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,8 +14,8 @@ public class MockUsers {
             log.info("Finished finding users...");
             return new User( 1L, "John Doe");
         } catch (InterruptedException e) {
-            log.warn("!!! Interrupted finding users... !!!");
-            throw new RuntimeException(e);
+            Thread.currentThread().interrupt();
+            throw new UsersException("!!! Interrupted finding users... !!!", e);
         }
     }
 

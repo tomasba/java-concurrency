@@ -1,4 +1,4 @@
-package com.jep.concurrency;
+package com.jep.concurrency.order;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,8 +14,8 @@ public class MockOrders {
             log.info("Finished finding orders...");
             return new Order( 10L, "ABD123454", 1);
         } catch (InterruptedException e) {
-            log.warn("!!! Interrupted finding orders... !!!");
-            throw new RuntimeException(e);
+            Thread.currentThread().interrupt();
+            throw new OrdersException("!!! Interrupted finding orders... !!!", e);
         }
     }
 
@@ -26,8 +26,8 @@ public class MockOrders {
             log.info("Finished finding orders with FAILURE...");
             throw new IllegalArgumentException("Simulated exception in findOrdersFailing");
         } catch (InterruptedException e) {
-            log.warn("!!! Interrupted finding orders... !!!");
-            throw new RuntimeException(e);
+            Thread.currentThread().interrupt();
+            throw new OrdersException("!!! Interrupted finding orders... !!!", e);
         }
     }
 
