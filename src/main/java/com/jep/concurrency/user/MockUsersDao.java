@@ -3,11 +3,11 @@ package com.jep.concurrency.user;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class MockUsers {
+public class MockUsersDao {
 
-    private final Logger log = LoggerFactory.getLogger(MockUsers.class);
+    private final Logger log = LoggerFactory.getLogger(MockUsersDao.class);
 
-    User findUsers() {
+    public User findUsers() {
         try {
             log.info("Finding users...");
             Thread.sleep(4000); // Simulate a delay in finding users

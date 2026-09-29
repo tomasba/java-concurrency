@@ -1,9 +1,9 @@
 package com.jep.concurrency;
 
-import com.jep.concurrency.order.MockOrders;
+import com.jep.concurrency.order.MockOrdersDao;
 import com.jep.concurrency.order.Order;
 import com.jep.concurrency.shopping.ShoppingCart;
-import com.jep.concurrency.user.MockUsers;
+import com.jep.concurrency.user.MockUsersDao;
 import com.jep.concurrency.user.User;
 import org.junit.jupiter.api.Test;
 
@@ -13,8 +13,8 @@ public class StructuredVirtualThreadsTest {
 
     @Test
     void shouldExecuteStructuredVirtualThreads() throws InterruptedException {
-        MockUsers mockUsers = new MockUsers();
-        MockOrders mockOrders = new MockOrders();
+        MockUsersDao mockUsersDao = new MockUsersDao();
+        MockOrdersDao mockOrdersDao = new MockOrdersDao();
 
         long start = System.currentTimeMillis();
 
@@ -26,8 +26,8 @@ public class StructuredVirtualThreadsTest {
         try (var scope = StructuredTaskScope.open()) {
             System.out.println("Submitted tasks to virtual threads executor. Waiting Subtasks to complete...");
             // with the fork.. subtasks are executed immediately in parallel, each on its own virtual thread.
-            StructuredTaskScope.Subtask<User> userSubtask = scope.fork(mockUsers::findUsers);
-            StructuredTaskScope.Subtask<Order> orderSubtask = scope.fork(mockOrders::findOrders);
+            StructuredTaskScope.Subtask<User> userSubtask = scope.fork(mockUsersDao::findUsers);
+            StructuredTaskScope.Subtask<Order> orderSubtask = scope.fork(mockOrdersDao::findOrders);
 
 //            System.out.println("Implicit 6s wait...");
 //            Thread.sleep(6000);
@@ -47,8 +47,8 @@ public class StructuredVirtualThreadsTest {
 
     @Test
     void shouldExecuteStructuredVirtualThreadsWithFailingSubtask() throws InterruptedException {
-        MockUsers mockUsers = new MockUsers();
-        MockOrders mockOrders = new MockOrders();
+        MockUsersDao mockUsersDao = new MockUsersDao();
+        MockOrdersDao mockOrdersDao = new MockOrdersDao();
 
         long start = System.currentTimeMillis();
 
@@ -59,8 +59,8 @@ public class StructuredVirtualThreadsTest {
         // and does not return until both threads are done.
         try (var scope = StructuredTaskScope.open()) {
             System.out.println("Submitted tasks to virtual threads executor. Waiting Subtasks to complete...");
-            StructuredTaskScope.Subtask<User> userSubtask = scope.fork(mockUsers::findUsers);
-            StructuredTaskScope.Subtask<Order> orderSubtask = scope.fork(mockOrders::findOrdersFailing);
+            StructuredTaskScope.Subtask<User> userSubtask = scope.fork(mockUsersDao::findUsers);
+            StructuredTaskScope.Subtask<Order> orderSubtask = scope.fork(mockOrdersDao::findOrdersFailing);
             System.out.println("Waiting for subtasks to complete...");
             scope.join();           // Join both tasks
 

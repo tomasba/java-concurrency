@@ -3,11 +3,11 @@ package com.jep.concurrency.order;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class MockOrders {
+public class MockOrdersDao {
 
-    private final Logger log = LoggerFactory.getLogger(MockOrders.class);
+    private final Logger log = LoggerFactory.getLogger(MockOrdersDao.class);
 
-    Order findOrders() {
+    public Order findOrders() {
         try {
             log.info("Finding orders...");
             Thread.sleep(6000); // Simulate a delay in finding orders
@@ -19,7 +19,7 @@ public class MockOrders {
         }
     }
 
-    Order findOrdersFailing() {
+    public Order findOrdersFailing() {
         try {
             log.info("Finding orders...");
             Thread.sleep(1000); // Simulate a delay in finding orders

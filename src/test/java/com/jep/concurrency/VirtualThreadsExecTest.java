@@ -1,9 +1,9 @@
 package com.jep.concurrency;
 
-import com.jep.concurrency.order.MockOrders;
+import com.jep.concurrency.order.MockOrdersDao;
 import com.jep.concurrency.order.Order;
 import com.jep.concurrency.shopping.ShoppingCart;
-import com.jep.concurrency.user.MockUsers;
+import com.jep.concurrency.user.MockUsersDao;
 import com.jep.concurrency.user.User;
 import org.junit.jupiter.api.Test;
 
@@ -15,8 +15,8 @@ public class VirtualThreadsExecTest {
 
     @Test
     void shouldExecuteInVirtualThreads() throws InterruptedException, ExecutionException {
-        MockUsers mockUsers = new MockUsers();
-        MockOrders mockOrders = new MockOrders();
+        MockUsersDao mockUsersDao = new MockUsersDao();
+        MockOrdersDao mockOrdersDao = new MockOrdersDao();
 
         // Execute findUsers and findOrders using virtual threads
         try (var executor = Executors.newVirtualThreadPerTaskExecutor()) {
@@ -25,8 +25,8 @@ public class VirtualThreadsExecTest {
 
             // Both calls start here immediately, in parallel, each on its own virtual thread.
             System.out.println("Submitted tasks to virtual threads executor. Waiting executors to complete...");
-            Future<User> user = executor.submit(mockUsers::findUsers);
-            Future<Order> order = executor.submit(mockOrders::findOrders);
+            Future<User> user = executor.submit(mockUsersDao::findUsers);
+            Future<Order> order = executor.submit(mockOrdersDao::findOrders);
 
             // Wait for both tasks to complete
             var result = new ShoppingCart(user.get(), order.get());
@@ -47,8 +47,8 @@ public class VirtualThreadsExecTest {
      */
     @Test
     void shouldExecuteInVirtualThreadsWithFailure() throws InterruptedException, ExecutionException {
-        MockUsers mockUsers = new MockUsers();
-        MockOrders mockOrders = new MockOrders();
+        MockUsersDao mockUsersDao = new MockUsersDao();
+        MockOrdersDao mockOrdersDao = new MockOrdersDao();
 
         // Execute findUsers and findOrders using virtual threads
         try (var executor = Executors.newVirtualThreadPerTaskExecutor()) {
@@ -57,8 +57,8 @@ public class VirtualThreadsExecTest {
 
             // Both calls start here immediately, in parallel, each on its own virtual thread.
             System.out.println("Submitted tasks to virtual threads executor. Waiting Futures to complete...");
-            Future<User> user = executor.submit(mockUsers::findUsers);
-            Future<Order> order = executor.submit(mockOrders::findOrdersFailing);
+            Future<User> user = executor.submit(mockUsersDao::findUsers);
+            Future<Order> order = executor.submit(mockOrdersDao::findOrdersFailing);
 
             // Wait for both tasks to complete. the get() calls are blocking ones.
             var result = new ShoppingCart(user.get(), order.get());
